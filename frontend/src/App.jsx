@@ -4,14 +4,18 @@ import ChatPage from './ChatPage'
 
 function App() {
   const [storeId, setStoreId] = useState('')
+  const [fileName, setFileName] = useState('')
 
   return (
     <div>
-      <h1>Document Chat</h1>
+      <h1 style={{  }}>Document Chat</h1>
       {!storeId ? (
-        <UploadPage onUpload={setStoreId} />
+        <UploadPage onUpload={(id, name) => {
+          setStoreId(id);
+          setFileName(name);
+        }} />
       ) : (
-        <ChatPage storeId={storeId} />
+        <ChatPage storeId={storeId} fileName={fileName} />
       )}
     </div>
   )

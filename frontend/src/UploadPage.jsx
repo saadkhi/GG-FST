@@ -4,6 +4,7 @@ import axios from 'axios'
 
 export default function UploadPage({ onUpload }) {
   const [file, setFile] = useState(null)
+  const [fileName, setFileName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -26,7 +27,7 @@ export default function UploadPage({ onUpload }) {
           'Content-Type': 'multipart/form-data'
         }
       })
-      onUpload(res.data.store_id)
+      onUpload(res.data.store_id, fileName)
     } catch (err) {
       const errorMsg = err.response?.data?.detail || 'Upload failed. Please try again.'
       setError(errorMsg)
@@ -41,15 +42,55 @@ export default function UploadPage({ onUpload }) {
       <h2>Upload a Document</h2>
       <form onSubmit={upload} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
-          <input
-            type="file"
-            onChange={(e) => {
-              setFile(e.target.files[0])
-              setError('')
-            }}
-            accept=".pdf,.txt,.doc,.docx"
-            disabled={isLoading}
-          />
+          <div style={{ 
+            border: '2px dashed #ccc',
+            padding: '20px',
+            borderRadius: '8px',
+            textAlign: 'center',
+            marginBottom: '15px',
+            backgroundColor: '#f9f9f9'
+          }}>
+            <input
+              type="file"
+              id="file-upload"
+              onChange={(e) => {
+                const selectedFile = e.target.files[0]
+                setFile(selectedFile)
+                setFileName(selectedFile ? selectedFile.name : '')
+                setError('')
+              }}
+              accept=".pdf,.txt,.doc,.docx"
+              disabled={isLoading}
+              style={{ display: 'none' }}
+            />
+            <label htmlFor="file-upload" style={{
+              display: 'block',
+              cursor: 'pointer',
+              color: '#4CAF50',
+              fontWeight: 'bold',
+              marginBottom: '10px'
+            }}>
+              {fileName ? 'Change File' : 'Choose a file'}
+            </label>
+            {fileName && (
+              <div style={{
+                marginTop: '10px',
+                padding: '8px',
+                backgroundColor: '#e8f5e9',
+                borderRadius: '4px',
+                wordBreak: 'break-word'
+              }}>
+                Selected: {fileName}
+              </div>
+            )}
+            <div style={{
+              fontSize: '0.9em',
+              color: '#666',
+              marginTop: '10px'
+            }}>
+              (Supports: .pdf, .txt, .doc, .docx)
+            </div>
+          </div>
         </div>
         
         {error && <div style={{ color: 'red' }}>{error}</div>}

@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-export default function ChatPage({ storeId }) {
+export default function ChatPage({ storeId, fileName }) {
   const [query, setQuery] = useState('')
   const [answer, setAnswer] = useState('')
   const [sources, setSources] = useState([])
@@ -37,7 +37,26 @@ export default function ChatPage({ storeId }) {
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h2>Chat with Your Document</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <h2>Chat with Your Document</h2>
+        {fileName && (
+          <div style={{
+            backgroundColor: '#e8f5e9',
+            padding: '8px 12px',
+            borderRadius: '16px',
+            fontSize: '0.9em',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span>📄</span>
+            <span style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} 
+                  title={fileName}>
+              {fileName}
+            </span>
+          </div>
+        )}
+      </div>
 
       <div style={{ marginBottom: '20px' }}>
         <textarea
@@ -86,7 +105,7 @@ export default function ChatPage({ storeId }) {
           marginBottom: '20px'
         }}>
           <h3>Answer:</h3>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{answer}</p>
+          <p style={{ whiteSpace: 'pre-wrap' , alignContent: 'center'}}>{answer}</p>
         </div>
       )}
 
